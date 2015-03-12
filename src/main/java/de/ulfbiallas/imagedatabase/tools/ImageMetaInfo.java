@@ -5,6 +5,8 @@ import java.util.Date;
 public class ImageMetaInfo {
 
 	private String id;
+	private String caption;
+	private String description;
 	private Date time;
 	private Integer width;
 	private Integer height;
@@ -16,6 +18,22 @@ public class ImageMetaInfo {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getCaption() {
+		return caption;
+	}
+
+	public void setCaption(String caption) {
+		this.caption = caption;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Date getTime() {

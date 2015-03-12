@@ -32,14 +32,4 @@ public class Image extends File {
 		this.height = height;
 	}
 
-	public ImageMetaInfo getMetaInfo() {
-		ImageMetaInfo metaInfo = new ImageMetaInfo();
-		metaInfo.setId(getId());
-		metaInfo.setTime(getTime());
-		metaInfo.setWidth(getWidth());
-		metaInfo.setHeight(getHeight());
-		metaInfo.setType(getType());
-		return metaInfo;
-	}
-
 }

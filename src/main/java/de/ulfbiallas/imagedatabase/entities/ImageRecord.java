@@ -9,6 +9,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import de.ulfbiallas.imagedatabase.tools.ImageMetaInfo;
+
 
 
 @Entity
@@ -71,4 +73,15 @@ public class ImageRecord {
 		this.image = image;
 	}
 
+	public ImageMetaInfo getMetaInfo() {
+		ImageMetaInfo metaInfo = new ImageMetaInfo();
+		metaInfo.setId(getId());
+		metaInfo.setCaption(getCaption());
+		metaInfo.setDescription(getDescription());
+		metaInfo.setTime(getTime());
+		metaInfo.setWidth(getImage().getWidth());
+		metaInfo.setHeight(getImage().getHeight());
+		metaInfo.setType(getImage().getType());
+		return metaInfo;
+	}
 }

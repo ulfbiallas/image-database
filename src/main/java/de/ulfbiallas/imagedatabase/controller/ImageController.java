@@ -26,7 +26,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 
 import de.ulfbiallas.imagedatabase.entities.Image;
-import de.ulfbiallas.imagedatabase.entities.ImageDAO;
+import de.ulfbiallas.imagedatabase.entities.ImageRecord;
+import de.ulfbiallas.imagedatabase.entities.ImageRecordDAO;
 import de.ulfbiallas.imagedatabase.tools.ImageMetaInfo;
 import de.ulfbiallas.imagedatabase.tools.ImageProcessor;
 
@@ -35,14 +36,14 @@ import de.ulfbiallas.imagedatabase.tools.ImageProcessor;
 @Path("image")
 public class ImageController {
 
-	private final ImageDAO imageDAO;
+	private final ImageRecordDAO imageRecordDAO;
 	private final ImageProcessor imageProcessor;
 
 
 
 	@Inject
-	public ImageController(final ImageDAO imageDAO, final ImageProcessor imageProcessor) {
-		this.imageDAO = imageDAO;
+	public ImageController(final ImageRecordDAO imageRecordDAO, final ImageProcessor imageProcessor) {
+		this.imageRecordDAO = imageRecordDAO;
 		this.imageProcessor = imageProcessor;
 	}
 
@@ -98,11 +99,11 @@ public class ImageController {
 	@JacksonFeatures(serializationEnable =  { SerializationFeature.INDENT_OUTPUT })
 	public Response getMetaInfosForAllImages() {
 		
-		List<Image> images = imageDAO.getImages();
+		List<ImageRecord> imageRecords = imageRecordDAO.getImageRecords();
 		
 		List<ImageMetaInfo> imageMetaInfos = new ArrayList<ImageMetaInfo>();
-		for(int k=0; k<images.size(); ++k) {
-			imageMetaInfos.add(images.get(k).getMetaInfo());
+		for(int k=0; k<imageRecords.size(); ++k) {
+			imageMetaInfos.add(imageRecords.get(k).getMetaInfo());
 		}
 				
 		ResponseBuilder responseBuilder = Response.status(Status.OK);
@@ -117,7 +118,8 @@ public class ImageController {
 	@Path("/{id}")
 	@Produces("image/png")
 	public Response showImage(@PathParam("id") String id) {
-		Image imageFile = imageDAO.getById(id);
+		ImageRecord imageRecord = imageRecordDAO.getById(id);
+		Image imageFile = imageRecord.getImage();
 		InputStream inputStream = new ByteArrayInputStream(imageFile.getData());
 
 		ResponseBuilder responseBuilder = Response.status(Status.OK);

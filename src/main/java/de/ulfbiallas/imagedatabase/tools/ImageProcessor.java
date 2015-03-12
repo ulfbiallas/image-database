@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import de.ulfbiallas.imagedatabase.entities.Image;
 import de.ulfbiallas.imagedatabase.entities.ImageDAO;
+import de.ulfbiallas.imagedatabase.entities.ImageRecord;
+import de.ulfbiallas.imagedatabase.entities.ImageRecordDAO;
 
 
 
@@ -21,12 +23,14 @@ import de.ulfbiallas.imagedatabase.entities.ImageDAO;
 public class ImageProcessor {
 
 	private final ImageDAO imageDAO;
+	private final ImageRecordDAO imageRecordDAO;
 
 
 
 	@Inject
-	public ImageProcessor(final ImageDAO imageDAO) {
+	public ImageProcessor(final ImageDAO imageDAO, final ImageRecordDAO imageRecordDAO) {
 		this.imageDAO = imageDAO;
+		this.imageRecordDAO = imageRecordDAO;
 	}
 
 
@@ -46,6 +50,8 @@ public class ImageProcessor {
 
 	private void saveImage(InputStream inputStream, String id, String caption, String description, String originalFileName) throws IOException, InterruptedException {
 
+		Date currentTime = new Date();
+
 		BufferedImage bufferedImage = ImageIO.read(inputStream);
 		if(bufferedImage != null) {
 
@@ -53,19 +59,25 @@ public class ImageProcessor {
 			int height = bufferedImage.getHeight();
 			System.out.println("Image size: " + width + " x " + height);
 
-			Image image = createImage(bufferedImage);
-			image.setId(id);
+			Image image = createImage(bufferedImage, currentTime);
 			imageDAO.save(image);
+
+			ImageRecord imageRecord = new ImageRecord();
+			imageRecord.setId(id);
+			imageRecord.setImage(image);
+			imageRecord.setCaption(caption);
+			imageRecord.setDescription(description);
+			imageRecord.setTime(currentTime);
+			imageRecordDAO.save(imageRecord);
 
 		}
 	}
 
 
 
-	private Image createImage(BufferedImage bufferedImage) throws IOException {
+	private Image createImage(BufferedImage bufferedImage, Date currentTime) throws IOException {
 		String id = UUID.randomUUID().toString();
 
-		Date currentTime = new Date();
 		String imageType = "png";
 
 		Image imageFile = new Image();

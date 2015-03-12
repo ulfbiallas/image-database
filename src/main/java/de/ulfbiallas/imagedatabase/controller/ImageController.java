@@ -1,5 +1,6 @@
 package de.ulfbiallas.imagedatabase.controller;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import javax.ws.rs.HeaderParam;
 import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -55,16 +57,6 @@ public class ImageController {
 		return responseBuilder.build();		
 	}
 
-
-/*
-	@GET
-	public Response get() {
-		ResponseBuilder responseBuilder = Response.ok();
-		responseBuilder.header("Access-Control-Allow-Origin", "*");
-		responseBuilder.entity("Test");
-		return responseBuilder.build();			
-	}
-*/
 
 
 	@POST
@@ -116,6 +108,22 @@ public class ImageController {
 		ResponseBuilder responseBuilder = Response.status(Status.OK);
 		responseBuilder.header("Access-Control-Allow-Origin", "*");
 		responseBuilder.entity(imageMetaInfos);
+		return responseBuilder.build();		
+	}
+
+
+
+	@GET
+	@Path("/{id}")
+	@Produces("image/png")
+	public Response showImage(@PathParam("id") String id) {
+		Image imageFile = imageDAO.getById(id);
+		InputStream inputStream = new ByteArrayInputStream(imageFile.getData());
+
+		ResponseBuilder responseBuilder = Response.status(Status.OK);
+		responseBuilder.header("Access-Control-Allow-Origin", "*");
+		responseBuilder.header("Content-Type", "image/"+imageFile.getType());
+		responseBuilder.entity(inputStream);
 		return responseBuilder.build();		
 	}
 }

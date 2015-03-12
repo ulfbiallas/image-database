@@ -98,7 +98,7 @@ public class ImageController {
 	@JacksonFeatures(serializationEnable =  { SerializationFeature.INDENT_OUTPUT })
 	public Response getMetaInfosForAllImages() {
 		
-		List<Image> images = imageDAO.getFiles();
+		List<Image> images = imageDAO.getImages();
 		
 		List<ImageMetaInfo> imageMetaInfos = new ArrayList<ImageMetaInfo>();
 		for(int k=0; k<images.size(); ++k) {

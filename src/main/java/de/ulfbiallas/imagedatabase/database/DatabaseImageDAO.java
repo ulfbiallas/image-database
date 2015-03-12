@@ -35,7 +35,7 @@ public class DatabaseImageDAO implements ImageDAO {
 
 
 
-	public List<Image> getFiles() {
+	public List<Image> getImages() {
 		Session session = databaseConnection.getSession();
 		Criteria criteria = session.createCriteria(Image.class);
 		List<Image> list = criteria.list();

@@ -19,6 +19,7 @@
         <mapping class="de.ulfbiallas.imagedatabase.entities.File"/>
         <mapping class="de.ulfbiallas.imagedatabase.entities.Image"/>
         <mapping class="de.ulfbiallas.imagedatabase.entities.ImageRecord"/>
+        <mapping class="de.ulfbiallas.imagedatabase.entities.Tag"/>
 
     </session-factory>
 </hibernate-configuration>

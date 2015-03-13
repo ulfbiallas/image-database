@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
 import de.ulfbiallas.imagedatabase.entities.Tag;
@@ -37,7 +38,9 @@ public class DatabaseTagDAO implements TagDAO {
 
 	public Tag getByName(String name) {
 		Session session = databaseConnection.getSession();
-		return (Tag) session.get(Tag.class, name);
+		Criteria criteria = session.createCriteria(Tag.class);
+		criteria.add(Restrictions.eq("name", name));
+		return (Tag) criteria.uniqueResult();
 	}
 
 

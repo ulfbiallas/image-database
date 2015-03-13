@@ -1,6 +1,7 @@
 package de.ulfbiallas.imagedatabase.tools;
 
 import java.util.Date;
+import java.util.List;
 
 public class ImageMetaInfo {
 
@@ -11,6 +12,9 @@ public class ImageMetaInfo {
 	private Integer width;
 	private Integer height;
 	private String type;
+	private List<String> tags;
+
+
 
 	public String getId() {
 		return id;
@@ -67,5 +71,13 @@ public class ImageMetaInfo {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+
+	public List<String> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+
 }

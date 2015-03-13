@@ -67,6 +67,7 @@ public class ImageController {
 			@FormDataParam("file") FormDataContentDisposition fileDetails,
 			@FormDataParam("caption") String caption,
 			@FormDataParam("description") String description,
+			@FormDataParam("tags") String tags,
 			@HeaderParam("Content-Length") Integer contentLength
 			) {
 
@@ -77,9 +78,10 @@ public class ImageController {
 		System.out.println("Content-Length: " + contentLength);
 		System.out.println("caption: " + caption);
 		System.out.println("description: " + description);
+		System.out.println("tags: " + tags);
 		System.out.println("");
 
-		String id = imageProcessor.processImage(file, caption, description, fileDetails.getFileName());
+		String id = imageProcessor.processImage(file, caption, description, tags, fileDetails.getFileName());
 
 		ResponseBuilder responseBuilder;
 		if(id != null) {

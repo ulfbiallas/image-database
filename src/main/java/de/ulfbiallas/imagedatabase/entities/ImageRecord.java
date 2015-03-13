@@ -1,10 +1,13 @@
 package de.ulfbiallas.imagedatabase.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -32,6 +35,11 @@ public class ImageRecord {
 
 	@OneToOne
 	private Image image;
+
+	@ManyToMany
+	private List<Tag> tags;
+
+
 
 	public String getId() {
 		return id;
@@ -73,6 +81,14 @@ public class ImageRecord {
 		this.image = image;
 	}
 
+	public List<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<Tag> tags) {
+		this.tags = tags;
+	}
+
 	public ImageMetaInfo getMetaInfo() {
 		ImageMetaInfo metaInfo = new ImageMetaInfo();
 		metaInfo.setId(getId());
@@ -82,6 +98,15 @@ public class ImageRecord {
 		metaInfo.setWidth(getImage().getWidth());
 		metaInfo.setHeight(getImage().getHeight());
 		metaInfo.setType(getImage().getType());
+		metaInfo.setTags(convertTagsToStrings(getTags()));
 		return metaInfo;
+	}
+
+	private List<String> convertTagsToStrings(List<Tag> tags) {
+		List<String> tagsAsString = new ArrayList<String>();
+		for (Tag tag: tags) {
+			tagsAsString.add(tag.getName());
+		}
+		return tagsAsString;
 	}
 }

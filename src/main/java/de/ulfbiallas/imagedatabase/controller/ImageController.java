@@ -100,14 +100,10 @@ public class ImageController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@JacksonFeatures(serializationEnable =  { SerializationFeature.INDENT_OUTPUT })
 	public Response getMetaInfosForAllImages() {
-		
+
 		List<ImageRecord> imageRecords = imageRecordDAO.getImageRecords();
-		
-		List<ImageMetaInfo> imageMetaInfos = new ArrayList<ImageMetaInfo>();
-		for(int k=0; k<imageRecords.size(); ++k) {
-			imageMetaInfos.add(imageRecords.get(k).getMetaInfo());
-		}
-				
+		List<ImageMetaInfo> imageMetaInfos = ImageMetaInfo.getMetaInforsForImageRecords(imageRecords);
+
 		ResponseBuilder responseBuilder = Response.status(Status.OK);
 		responseBuilder.header("Access-Control-Allow-Origin", "*");
 		responseBuilder.entity(imageMetaInfos);

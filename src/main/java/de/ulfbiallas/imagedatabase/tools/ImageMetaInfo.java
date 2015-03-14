@@ -1,7 +1,10 @@
 package de.ulfbiallas.imagedatabase.tools;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import de.ulfbiallas.imagedatabase.entities.ImageRecord;
 
 public class ImageMetaInfo {
 
@@ -78,6 +81,14 @@ public class ImageMetaInfo {
 
 	public void setTags(List<String> tags) {
 		this.tags = tags;
+	}
+
+	public static List<ImageMetaInfo> getMetaInforsForImageRecords(List<ImageRecord> imageRecords) {
+		List<ImageMetaInfo> imageMetaInfos = new ArrayList<ImageMetaInfo>();
+		for(int k=0; k<imageRecords.size(); ++k) {
+			imageMetaInfos.add(imageRecords.get(k).getMetaInfo());
+		}
+		return imageMetaInfos;
 	}
 
 }

@@ -10,11 +10,14 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 
 @Entity
 public class Tag {
 
+	@JsonIgnore
 	@Id
 	@Column
 	private String id;
@@ -22,10 +25,12 @@ public class Tag {
 	@Column(unique=true)
 	private String name;
 
+	@JsonIgnore
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column
 	private Date time;
 
+	@JsonIgnore
 	@ManyToMany(mappedBy="tags")
 	private List<ImageRecord> imageRecords;
 
@@ -61,6 +66,10 @@ public class Tag {
 
 	public void setImageRecords(List<ImageRecord> imageRecords) {
 		this.imageRecords = imageRecords;
+	}
+
+	public Integer getPopularity() {
+		return getImageRecords().size();
 	}
 
 }

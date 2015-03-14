@@ -1,10 +1,13 @@
 package de.ulfbiallas.imagedatabase;
 
 import java.net.URI;
+
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.jdkhttp.JdkHttpServerFactory;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
+
+import de.ulfbiallas.imagedatabase.config.ServerConfiguration;
 
 
 
@@ -20,10 +23,10 @@ public class Main {
 		resourceConfig.register(MultiPartFeature.class);
 		resourceConfig.register(JacksonFeature.class);
 
-		JdkHttpServerFactory.createHttpServer(
-			URI.create("http://localhost:8080/"),
-			resourceConfig
-		);
+		ServerConfiguration serverConfiguration = new ServerConfiguration();
+		String url = "http://localhost:"+serverConfiguration.getPort()+"/";
+
+		JdkHttpServerFactory.createHttpServer(URI.create(url),resourceConfig);
 	}
 
 }

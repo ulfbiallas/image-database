@@ -29,3 +29,12 @@ jar {
         attributes 'Main-Class': 'de.ulfbiallas.imagedatabase.Main'
     }
 }
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'de.ulfbiallas.imagedatabase.Main'
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}

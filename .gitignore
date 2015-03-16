@@ -2,5 +2,6 @@
 /bin
 /.gradle
 /.settings
+/.vagrant
 .classpath
 .project

@@ -2,7 +2,6 @@ package de.ulfbiallas.imagedatabase.controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -52,7 +51,6 @@ public class ImageController {
 	@OPTIONS
 	public Response options() {
 		ResponseBuilder responseBuilder = Response.ok();
-		responseBuilder.header("Access-Control-Allow-Origin", "*");
 		responseBuilder.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
 		responseBuilder.header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
 		return responseBuilder.build();		
@@ -90,7 +88,6 @@ public class ImageController {
 			responseBuilder = Response.status(Status.INTERNAL_SERVER_ERROR);
 		}
 
-		responseBuilder.header("Access-Control-Allow-Origin", "*");
 		return responseBuilder.build();
 	}
 
@@ -105,7 +102,6 @@ public class ImageController {
 		List<ImageMetaInfo> imageMetaInfos = ImageMetaInfo.getMetaInforsForImageRecords(imageRecords);
 
 		ResponseBuilder responseBuilder = Response.status(Status.OK);
-		responseBuilder.header("Access-Control-Allow-Origin", "*");
 		responseBuilder.entity(imageMetaInfos);
 		return responseBuilder.build();		
 	}
@@ -121,7 +117,6 @@ public class ImageController {
 		InputStream inputStream = new ByteArrayInputStream(imageFile.getData());
 
 		ResponseBuilder responseBuilder = Response.status(Status.OK);
-		responseBuilder.header("Access-Control-Allow-Origin", "*");
 		responseBuilder.header("Content-Type", "image/"+imageFile.getType());
 		responseBuilder.entity(inputStream);
 		return responseBuilder.build();		

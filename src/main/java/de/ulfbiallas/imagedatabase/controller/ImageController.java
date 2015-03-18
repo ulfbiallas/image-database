@@ -121,4 +121,21 @@ public class ImageController {
 		responseBuilder.entity(inputStream);
 		return responseBuilder.build();		
 	}
+
+
+
+	@GET
+	@Path("/{id}/thumbnail")
+	@Produces("image/png")
+	public Response showThumbnail(@PathParam("id") String id) {
+		ImageRecord imageRecord = imageRecordDAO.getById(id);
+		Image imageFile = imageRecord.getThumbnail();
+		InputStream inputStream = new ByteArrayInputStream(imageFile.getData());
+
+		ResponseBuilder responseBuilder = Response.status(Status.OK);
+		responseBuilder.header("Content-Type", "image/"+imageFile.getType());
+		responseBuilder.entity(inputStream);
+		return responseBuilder.build();		
+	}
+
 }

@@ -36,6 +36,9 @@ public class ImageRecord {
 	@OneToOne
 	private Image image;
 
+	@OneToOne
+	private Image thumbnail;
+
 	@ManyToMany
 	private List<Tag> tags;
 
@@ -79,6 +82,14 @@ public class ImageRecord {
 
 	public void setImage(Image image) {
 		this.image = image;
+	}
+
+	public Image getThumbnail() {
+		return thumbnail;
+	}
+
+	public void setThumbnail(Image thumbnail) {
+		this.thumbnail = thumbnail;
 	}
 
 	public List<Tag> getTags() {

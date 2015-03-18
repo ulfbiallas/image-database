@@ -33,6 +33,8 @@ public class ImageProcessor {
 	private final ImageRecordDAO imageRecordDAO;
 	private final TagDAO tagDAO;
 
+	private static final int THUMBNAIL_SIZE = 200;
+
 
 
 	@Inject
@@ -70,6 +72,10 @@ public class ImageProcessor {
 			Image image = createImage(bufferedImage, currentTime);
 			imageDAO.save(image);
 
+			BufferedImage bufferedImageThumbnail = ImageResizer.resizeWithMaximalEdgeLength(bufferedImage, THUMBNAIL_SIZE);
+			Image thumbnail = createImage(bufferedImageThumbnail, currentTime);
+			imageDAO.save(thumbnail);
+
 			String tag;
 			Set<String> tagSet = processTagsString(tags);
 			Iterator<String> tagSetIterator = tagSet.iterator();
@@ -93,6 +99,7 @@ public class ImageProcessor {
 			ImageRecord imageRecord = new ImageRecord();
 			imageRecord.setId(id);
 			imageRecord.setImage(image);
+			imageRecord.setThumbnail(thumbnail);
 			imageRecord.setCaption(caption);
 			imageRecord.setDescription(description);
 			imageRecord.setTime(currentTime);

@@ -3,10 +3,11 @@ package de.ulfbiallas.imagedatabase.database;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Component;
 
 import de.ulfbiallas.imagedatabase.entities.File;
@@ -29,45 +30,46 @@ public class DatabaseFileDAO implements FileDAO {
 
 
 	public File getById(String id) {
-		Session session = databaseConnection.getSession();
-		return (File) session.get(File.class, id);
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		return (File) entityManager.find(File.class, id);
 	}
 
 
 
 	public List<File> getFiles() {
-		Session session = databaseConnection.getSession();
-		Criteria criteria = session.createCriteria(File.class);
-		List<File> list = criteria.list();
-		return list;
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		CriteriaBuilder queryBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<File> criteriaQuery = queryBuilder.createQuery(File.class);
+		criteriaQuery.from(File.class);
+		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 
 
 
 	public String save(File file) {
-		Session session = databaseConnection.getSession();
-		Transaction tx = null;
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		EntityTransaction tx = entityManager.getTransaction();
 		try {
-			tx = session.beginTransaction();
-			session.save(file);
+			tx.begin();
+			entityManager.persist(file);
 			tx.commit();
 			return file.getId();
 		}
 		catch (Exception e) {
-		   if (tx!=null) tx.rollback();
-		   e.printStackTrace(); 
-		   return null;
+			if (tx!=null) tx.rollback();
+			e.printStackTrace();
+			return null;
 		}
 	}
 
 
 
 	public void update(File file) {
-		Session session = databaseConnection.getSession();
-		Transaction tx = null;
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		EntityTransaction tx = entityManager.getTransaction();
 		try {
-			tx = session.beginTransaction();
-			session.save(file);
+			tx.begin();
+			entityManager.refresh(file);
 			tx.commit();
 		}
 		catch (Exception e) {
@@ -79,11 +81,11 @@ public class DatabaseFileDAO implements FileDAO {
 
 
 	public void delete(File file) {
-		Session session = databaseConnection.getSession();
-		Transaction tx = null;
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		EntityTransaction tx = entityManager.getTransaction();
 		try {
-			tx = session.beginTransaction();
-			session.delete(file);
+			tx.begin();
+			entityManager.remove(file);
 			tx.commit();
 		}
 		catch (Exception e) {

@@ -1,30 +1,27 @@
 package de.ulfbiallas.imagedatabase.database;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.AnnotationConfiguration;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+
 import org.springframework.stereotype.Component;
-
-
 
 @Component
 public class DatabaseConnection {
 
-	private SessionFactory sf;
-	private Session session;
+	private EntityManager entityManager;
+
+
 
 	public DatabaseConnection() {
-		sf = new AnnotationConfiguration().configure("hibernate.cfg.xml").buildSessionFactory();			
-		session = sf.openSession();		
+		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("imagedatabase");
+		entityManager = entityManagerFactory.createEntityManager();
 	}
-	
-	public Session getSession() {
-		return session;
-	}
-	
-	public void destroy() {
-		if(session.isOpen()) session.close();
-		if(!sf.isClosed()) sf.close();
+
+
+
+	public EntityManager getEntityManager() {
+		return entityManager;
 	}
 
 }

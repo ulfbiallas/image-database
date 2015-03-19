@@ -3,13 +3,13 @@ package de.ulfbiallas.imagedatabase.database;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Component;
 
-import de.ulfbiallas.imagedatabase.entities.Image;
 import de.ulfbiallas.imagedatabase.entities.ImageRecord;
 import de.ulfbiallas.imagedatabase.entities.ImageRecordDAO;
 
@@ -30,45 +30,46 @@ public class DatabaseImageRecordDAO implements ImageRecordDAO {
 
 
 	public ImageRecord getById(String id) {
-		Session session = databaseConnection.getSession();
-		return (ImageRecord) session.get(ImageRecord.class, id);
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		return (ImageRecord) entityManager.find(ImageRecord.class, id);
 	}
 
 
 
 	public List<ImageRecord> getImageRecords() {
-		Session session = databaseConnection.getSession();
-		Criteria criteria = session.createCriteria(ImageRecord.class);
-		List<ImageRecord> list = criteria.list();
-		return list;
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		CriteriaBuilder queryBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<ImageRecord> criteriaQuery = queryBuilder.createQuery(ImageRecord.class);
+		criteriaQuery.from(ImageRecord.class);
+		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 
 
 
 	public String save(ImageRecord imageRecord) {
-		Session session = databaseConnection.getSession();
-		Transaction tx = null;
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		EntityTransaction tx = entityManager.getTransaction();
 		try {
-			tx = session.beginTransaction();
-			session.save(imageRecord);
+			tx.begin();
+			entityManager.persist(imageRecord);
 			tx.commit();
 			return imageRecord.getId();
 		}
 		catch (Exception e) {
-		   if (tx!=null) tx.rollback();
-		   e.printStackTrace(); 
-		   return null;
+			if (tx!=null) tx.rollback();
+			e.printStackTrace();
+			return null;
 		}
 	}
 
 
 
 	public void update(ImageRecord imageRecord) {
-		Session session = databaseConnection.getSession();
-		Transaction tx = null;
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		EntityTransaction tx = entityManager.getTransaction();
 		try {
-			tx = session.beginTransaction();
-			session.save(imageRecord);
+			tx.begin();
+			entityManager.refresh(imageRecord);
 			tx.commit();
 		}
 		catch (Exception e) {
@@ -80,11 +81,11 @@ public class DatabaseImageRecordDAO implements ImageRecordDAO {
 
 
 	public void delete(ImageRecord imageRecord) {
-		Session session = databaseConnection.getSession();
-		Transaction tx = null;
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		EntityTransaction tx = entityManager.getTransaction();
 		try {
-			tx = session.beginTransaction();
-			session.delete(imageRecord);
+			tx.begin();
+			entityManager.remove(imageRecord);
 			tx.commit();
 		}
 		catch (Exception e) {

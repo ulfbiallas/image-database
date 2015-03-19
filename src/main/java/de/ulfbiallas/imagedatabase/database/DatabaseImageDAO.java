@@ -3,10 +3,11 @@ package de.ulfbiallas.imagedatabase.database;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.springframework.stereotype.Component;
 
 import de.ulfbiallas.imagedatabase.entities.Image;
@@ -29,45 +30,46 @@ public class DatabaseImageDAO implements ImageDAO {
 
 
 	public Image getById(String id) {
-		Session session = databaseConnection.getSession();
-		return (Image) session.get(Image.class, id);
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		return (Image) entityManager.find(Image.class, id);
 	}
 
 
 
 	public List<Image> getImages() {
-		Session session = databaseConnection.getSession();
-		Criteria criteria = session.createCriteria(Image.class);
-		List<Image> list = criteria.list();
-		return list;
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		CriteriaBuilder queryBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Image> criteriaQuery = queryBuilder.createQuery(Image.class);
+		criteriaQuery.from(Image.class);
+		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 
 
 
 	public String save(Image image) {
-		Session session = databaseConnection.getSession();
-		Transaction tx = null;
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		EntityTransaction tx = entityManager.getTransaction();
 		try {
-			tx = session.beginTransaction();
-			session.save(image);
+			tx.begin();
+			entityManager.persist(image);
 			tx.commit();
 			return image.getId();
 		}
 		catch (Exception e) {
-		   if (tx!=null) tx.rollback();
-		   e.printStackTrace(); 
-		   return null;
+			if (tx!=null) tx.rollback();
+			e.printStackTrace();
+			return null;
 		}
 	}
 
 
 
 	public void update(Image image) {
-		Session session = databaseConnection.getSession();
-		Transaction tx = null;
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		EntityTransaction tx = entityManager.getTransaction();
 		try {
-			tx = session.beginTransaction();
-			session.save(image);
+			tx.begin();
+			entityManager.refresh(image);
 			tx.commit();
 		}
 		catch (Exception e) {
@@ -79,11 +81,11 @@ public class DatabaseImageDAO implements ImageDAO {
 
 
 	public void delete(Image image) {
-		Session session = databaseConnection.getSession();
-		Transaction tx = null;
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		EntityTransaction tx = entityManager.getTransaction();
 		try {
-			tx = session.beginTransaction();
-			session.delete(image);
+			tx.begin();
+			entityManager.remove(image);
 			tx.commit();
 		}
 		catch (Exception e) {

@@ -3,11 +3,12 @@ package de.ulfbiallas.imagedatabase.database;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
 import de.ulfbiallas.imagedatabase.entities.Tag;
@@ -30,54 +31,57 @@ public class DatabaseTagDAO implements TagDAO {
 
 
 	public Tag getById(String id) {
-		Session session = databaseConnection.getSession();
-		return (Tag) session.get(Tag.class, id);
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		return (Tag) entityManager.find(Tag.class, id);
 	}
 
 
 
 	public Tag getByName(String name) {
-		Session session = databaseConnection.getSession();
-		Criteria criteria = session.createCriteria(Tag.class);
-		criteria.add(Restrictions.eq("name", name));
-		return (Tag) criteria.uniqueResult();
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		CriteriaBuilder queryBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Tag> criteriaQuery = queryBuilder.createQuery(Tag.class);
+		Root<Tag> user = criteriaQuery.from(Tag.class);
+		criteriaQuery.select(user).where(queryBuilder.equal(user.get("name"), name));
+		return entityManager.createQuery(criteriaQuery).getSingleResult();
 	}
 
 
 
 	public List<Tag> getTags() {
-		Session session = databaseConnection.getSession();
-		Criteria criteria = session.createCriteria(Tag.class);
-		List<Tag> list = criteria.list();
-		return list;
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		CriteriaBuilder queryBuilder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Tag> criteriaQuery = queryBuilder.createQuery(Tag.class);
+		criteriaQuery.from(Tag.class);
+		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 
 
 
 	public String save(Tag tag) {
-		Session session = databaseConnection.getSession();
-		Transaction tx = null;
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		EntityTransaction tx = entityManager.getTransaction();
 		try {
-			tx = session.beginTransaction();
-			session.save(tag);
+			tx.begin();
+			entityManager.persist(tag);
 			tx.commit();
 			return tag.getId();
 		}
 		catch (Exception e) {
-		   if (tx!=null) tx.rollback();
-		   e.printStackTrace(); 
-		   return null;
+			if (tx!=null) tx.rollback();
+			e.printStackTrace();
+			return null;
 		}
 	}
 
 
 
 	public void update(Tag tag) {
-		Session session = databaseConnection.getSession();
-		Transaction tx = null;
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		EntityTransaction tx = entityManager.getTransaction();
 		try {
-			tx = session.beginTransaction();
-			session.save(tag);
+			tx.begin();
+			entityManager.refresh(tag);
 			tx.commit();
 		}
 		catch (Exception e) {
@@ -89,11 +93,11 @@ public class DatabaseTagDAO implements TagDAO {
 
 
 	public void delete(Tag tag) {
-		Session session = databaseConnection.getSession();
-		Transaction tx = null;
+		EntityManager entityManager = databaseConnection.getEntityManager();
+		EntityTransaction tx = entityManager.getTransaction();
 		try {
-			tx = session.beginTransaction();
-			session.delete(tag);
+			tx.begin();
+			entityManager.remove(tag);
 			tx.commit();
 		}
 		catch (Exception e) {

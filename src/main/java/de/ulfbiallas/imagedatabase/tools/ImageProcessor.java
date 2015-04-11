@@ -115,7 +115,7 @@ public class ImageProcessor {
 		Set<String> tagSet = new HashSet<String>();
 		String[] tagStrings = tags.split(",");
 		for (String tagString : tagStrings) {
-			tagSet.add(tagString.trim());
+			tagSet.add(tagString.trim().toLowerCase());
 		}
 		return tagSet;
 	}

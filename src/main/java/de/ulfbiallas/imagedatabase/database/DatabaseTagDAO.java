@@ -38,12 +38,17 @@ public class DatabaseTagDAO implements TagDAO {
 
 
 	public Tag getByName(String name) {
+		System.out.println("getByName: " + name);
 		EntityManager entityManager = databaseConnection.getEntityManager();
 		CriteriaBuilder queryBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Tag> criteriaQuery = queryBuilder.createQuery(Tag.class);
-		Root<Tag> user = criteriaQuery.from(Tag.class);
-		criteriaQuery.select(user).where(queryBuilder.equal(user.get("name"), name));
-		return entityManager.createQuery(criteriaQuery).getSingleResult();
+		Root<Tag> tag = criteriaQuery.from(Tag.class);
+		criteriaQuery.select(tag).where(queryBuilder.equal(tag.get("name"), name));
+		try {
+			return entityManager.createQuery(criteriaQuery).getSingleResult();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 

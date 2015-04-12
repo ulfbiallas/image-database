@@ -69,7 +69,10 @@ public class Tag {
 	}
 
 	public Integer getPopularity() {
-		return getImageRecords().size();
+		if(getImageRecords() != null) {
+			return getImageRecords().size();
+		}
+		return 0;
 	}
 
 }

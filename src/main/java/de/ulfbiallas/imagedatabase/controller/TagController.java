@@ -17,7 +17,7 @@ import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 
 import de.ulfbiallas.imagedatabase.entities.ImageRecord;
 import de.ulfbiallas.imagedatabase.entities.Tag;
-import de.ulfbiallas.imagedatabase.entities.TagDAO;
+import de.ulfbiallas.imagedatabase.repository.TagRepository;
 import de.ulfbiallas.imagedatabase.tools.ImageMetaInfo;
 
 
@@ -25,13 +25,13 @@ import de.ulfbiallas.imagedatabase.tools.ImageMetaInfo;
 public class TagController {
 
 
-	private final TagDAO tagDAO;
+	private final TagRepository tagRepository;
 
 
 
 	@Inject
-	public TagController(TagDAO tagDAO) {
-		this.tagDAO = tagDAO;
+	public TagController(TagRepository tagRepository) {
+		this.tagRepository = tagRepository;
 	}
 
 
@@ -40,7 +40,7 @@ public class TagController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@JacksonFeatures(serializationEnable = { SerializationFeature.INDENT_OUTPUT })
 	public Response getTags() {
-		List<Tag> tags = tagDAO.getTags();
+		List<Tag> tags = tagRepository.findAll();
 		ResponseBuilder responseBuilder = Response.status(Status.OK);
 		responseBuilder.entity(tags);
 		return responseBuilder.build();
@@ -55,7 +55,7 @@ public class TagController {
 	public Response getImageRecordsByTag(@PathParam("tag") String tagString) {
 
 		tagString = tagString.replaceAll("\\+", " ");
-		Tag tag = tagDAO.getByName(tagString);
+		Tag tag = tagRepository.findByName(tagString);
 
 		List<ImageRecord> imageRecords = tag.getImageRecords();
 		List<ImageMetaInfo> imageMetaInfos = ImageMetaInfo.getMetaInforsForImageRecords(imageRecords);

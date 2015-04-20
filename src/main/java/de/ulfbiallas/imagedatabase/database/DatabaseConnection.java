@@ -6,7 +6,7 @@ import javax.persistence.Persistence;
 
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class DatabaseConnection {
 
 	private EntityManager entityManager;

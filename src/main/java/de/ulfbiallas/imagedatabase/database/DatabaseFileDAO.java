@@ -15,7 +15,7 @@ import de.ulfbiallas.imagedatabase.entities.FileDAO;
 
 
 
-@Component
+//@Component
 public class DatabaseFileDAO implements FileDAO {
 
 	private final DatabaseConnection databaseConnection;

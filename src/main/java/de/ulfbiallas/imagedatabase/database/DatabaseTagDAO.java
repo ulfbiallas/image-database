@@ -16,7 +16,7 @@ import de.ulfbiallas.imagedatabase.entities.TagDAO;
 
 
 
-@Component
+//@Component
 public class DatabaseTagDAO implements TagDAO {
 
 	private final DatabaseConnection databaseConnection;

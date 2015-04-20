@@ -26,7 +26,7 @@ import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 
 import de.ulfbiallas.imagedatabase.entities.Image;
 import de.ulfbiallas.imagedatabase.entities.ImageRecord;
-import de.ulfbiallas.imagedatabase.entities.ImageRecordDAO;
+import de.ulfbiallas.imagedatabase.repository.ImageRecordRepository;
 import de.ulfbiallas.imagedatabase.tools.ImageMetaInfo;
 import de.ulfbiallas.imagedatabase.tools.ImageProcessor;
 
@@ -35,14 +35,14 @@ import de.ulfbiallas.imagedatabase.tools.ImageProcessor;
 @Path("image")
 public class ImageController {
 
-	private final ImageRecordDAO imageRecordDAO;
+	private final ImageRecordRepository imageRecordRepository;
 	private final ImageProcessor imageProcessor;
 
 
 
 	@Inject
-	public ImageController(final ImageRecordDAO imageRecordDAO, final ImageProcessor imageProcessor) {
-		this.imageRecordDAO = imageRecordDAO;
+	public ImageController(final ImageRecordRepository imageRecordRepository, final ImageProcessor imageProcessor) {
+		this.imageRecordRepository = imageRecordRepository;
 		this.imageProcessor = imageProcessor;
 	}
 
@@ -98,7 +98,7 @@ public class ImageController {
 	@JacksonFeatures(serializationEnable =  { SerializationFeature.INDENT_OUTPUT })
 	public Response getMetaInfosForAllImages() {
 
-		List<ImageRecord> imageRecords = imageRecordDAO.getImageRecords();
+		List<ImageRecord> imageRecords = imageRecordRepository.findAll();
 		List<ImageMetaInfo> imageMetaInfos = ImageMetaInfo.getMetaInforsForImageRecords(imageRecords);
 
 		ResponseBuilder responseBuilder = Response.status(Status.OK);
@@ -112,7 +112,7 @@ public class ImageController {
 	@Path("/{id}")
 	@Produces("image/png")
 	public Response showImage(@PathParam("id") String id) {
-		ImageRecord imageRecord = imageRecordDAO.getById(id);
+		ImageRecord imageRecord = imageRecordRepository.findById(id);
 		Image imageFile = imageRecord.getImage();
 		InputStream inputStream = new ByteArrayInputStream(imageFile.getData());
 
@@ -128,7 +128,7 @@ public class ImageController {
 	@Path("/{id}/thumbnail")
 	@Produces("image/png")
 	public Response showThumbnail(@PathParam("id") String id) {
-		ImageRecord imageRecord = imageRecordDAO.getById(id);
+		ImageRecord imageRecord = imageRecordRepository.findById(id);
 		Image imageFile = imageRecord.getThumbnail();
 		InputStream inputStream = new ByteArrayInputStream(imageFile.getData());
 

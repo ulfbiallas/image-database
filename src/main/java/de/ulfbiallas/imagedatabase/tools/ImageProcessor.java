@@ -80,7 +80,7 @@ public class ImageProcessor {
 			Set<String> tagSet = processTagsString(tags);
 			Iterator<String> tagSetIterator = tagSet.iterator();
 			Tag tagEntity;
-			List<Tag> tagEntities = new ArrayList<Tag>();
+			Set<Tag> tagEntities = new HashSet<Tag>();
 			while(tagSetIterator.hasNext()) {
 				tag = tagSetIterator.next();
 				System.out.println("get tag by name: " + tag);

@@ -2,6 +2,7 @@ package de.ulfbiallas.imagedatabase.controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -97,10 +98,8 @@ public class ImageController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@JacksonFeatures(serializationEnable =  { SerializationFeature.INDENT_OUTPUT })
 	public Response getMetaInfosForAllImages() {
-
 		List<ImageRecord> imageRecords = imageRecordRepository.findAll();
-		List<ImageMetaInfo> imageMetaInfos = ImageMetaInfo.getMetaInforsForImageRecords(imageRecords);
-
+		List<ImageMetaInfo> imageMetaInfos = ImageMetaInfo.getMetaInforsForImageRecords(new HashSet<ImageRecord>(imageRecords));
 		ResponseBuilder responseBuilder = Response.status(Status.OK);
 		responseBuilder.entity(imageMetaInfos);
 		return responseBuilder.build();		

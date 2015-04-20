@@ -18,30 +18,30 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Component;
 
 import de.ulfbiallas.imagedatabase.entities.Image;
-import de.ulfbiallas.imagedatabase.entities.ImageDAO;
 import de.ulfbiallas.imagedatabase.entities.ImageRecord;
-import de.ulfbiallas.imagedatabase.entities.ImageRecordDAO;
 import de.ulfbiallas.imagedatabase.entities.Tag;
-import de.ulfbiallas.imagedatabase.entities.TagDAO;
+import de.ulfbiallas.imagedatabase.repository.ImageRecordRepository;
+import de.ulfbiallas.imagedatabase.repository.ImageRepository;
+import de.ulfbiallas.imagedatabase.repository.TagRepository;
 
 
 
 @Component
 public class ImageProcessor {
 
-	private final ImageDAO imageDAO;
-	private final ImageRecordDAO imageRecordDAO;
-	private final TagDAO tagDAO;
+	private final ImageRepository imageRepository;
+	private final ImageRecordRepository imageRecordRepository;
+	private final TagRepository tagRepository;
 
 	private static final int THUMBNAIL_SIZE = 200;
 
 
 
 	@Inject
-	public ImageProcessor(final ImageDAO imageDAO, final ImageRecordDAO imageRecordDAO, final TagDAO tagDAO) {
-		this.imageDAO = imageDAO;
-		this.imageRecordDAO = imageRecordDAO;
-		this.tagDAO = tagDAO;
+	public ImageProcessor(final ImageRepository imageRepository, final ImageRecordRepository imageRecordRepository, final TagRepository tagRepository) {
+		this.imageRepository = imageRepository;
+		this.imageRecordRepository = imageRecordRepository;
+		this.tagRepository = tagRepository;
 	}
 
 
@@ -70,28 +70,28 @@ public class ImageProcessor {
 			System.out.println("Image size: " + width + " x " + height);
 
 			Image image = createImage(bufferedImage, currentTime);
-			imageDAO.save(image);
+			imageRepository.save(image);
 
 			BufferedImage bufferedImageThumbnail = ImageResizer.resizeWithMaximalEdgeLength(bufferedImage, THUMBNAIL_SIZE);
 			Image thumbnail = createImage(bufferedImageThumbnail, currentTime);
-			imageDAO.save(thumbnail);
+			imageRepository.save(thumbnail);
 
 			String tag;
 			Set<String> tagSet = processTagsString(tags);
 			Iterator<String> tagSetIterator = tagSet.iterator();
 			Tag tagEntity;
-			List<Tag> tagEntities = new ArrayList<Tag>();
+			Set<Tag> tagEntities = new HashSet<Tag>();
 			while(tagSetIterator.hasNext()) {
 				tag = tagSetIterator.next();
 				System.out.println("get tag by name: " + tag);
-				tagEntity = tagDAO.getByName(tag);
+				tagEntity = tagRepository.findByName(tag);
 				System.out.println("tagEntity: " + tagEntity);
 				if(tagEntity == null) {
 					tagEntity = new Tag();
 					tagEntity.setId(UUID.randomUUID().toString());
 					tagEntity.setName(tag);
 					tagEntity.setTime(new Date());
-					tagDAO.save(tagEntity);
+					tagRepository.save(tagEntity);
 				}
 				tagEntities.add(tagEntity);
 			}
@@ -104,7 +104,7 @@ public class ImageProcessor {
 			imageRecord.setDescription(description);
 			imageRecord.setTime(currentTime);
 			imageRecord.setTags(tagEntities);
-			imageRecordDAO.save(imageRecord);
+			imageRecordRepository.save(imageRecord);
 
 		}
 	}

@@ -1,10 +1,12 @@
 package de.ulfbiallas.imagedatabase.entities;
 
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
@@ -31,8 +33,8 @@ public class Tag {
 	private Date time;
 
 	@JsonIgnore
-	@ManyToMany(mappedBy="tags")
-	private List<ImageRecord> imageRecords;
+	@ManyToMany(mappedBy="tags", fetch=FetchType.EAGER)
+	private Set<ImageRecord> imageRecords = new HashSet<ImageRecord>();
 
 
 
@@ -60,11 +62,11 @@ public class Tag {
 		this.time = time;
 	}
 
-	public List<ImageRecord> getImageRecords() {
+	public Set<ImageRecord> getImageRecords() {
 		return imageRecords;
 	}
 
-	public void setImageRecords(List<ImageRecord> imageRecords) {
+	public void setImageRecords(Set<ImageRecord> imageRecords) {
 		this.imageRecords = imageRecords;
 	}
 

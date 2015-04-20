@@ -2,15 +2,20 @@ package de.ulfbiallas.imagedatabase.entities;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.Hibernate;
 
 import de.ulfbiallas.imagedatabase.tools.ImageMetaInfo;
 
@@ -39,8 +44,8 @@ public class ImageRecord {
 	@OneToOne
 	private Image thumbnail;
 
-	@ManyToMany
-	private List<Tag> tags;
+	@ManyToMany(fetch = FetchType.EAGER)
+	private Set<Tag> tags = new HashSet<Tag>();
 
 
 
@@ -92,11 +97,11 @@ public class ImageRecord {
 		this.thumbnail = thumbnail;
 	}
 
-	public List<Tag> getTags() {
+	public Set<Tag> getTags() {
 		return tags;
 	}
 
-	public void setTags(List<Tag> tags) {
+	public void setTags(Set<Tag> tags) {
 		this.tags = tags;
 	}
 
@@ -113,7 +118,7 @@ public class ImageRecord {
 		return metaInfo;
 	}
 
-	private List<String> convertTagsToStrings(List<Tag> tags) {
+	private List<String> convertTagsToStrings(Set<Tag> tags) {
 		List<String> tagsAsString = new ArrayList<String>();
 		for (Tag tag: tags) {
 			tagsAsString.add(tag.getName());

@@ -31,7 +31,7 @@ public class Histogram {
 			for (ix=0; ix<img.getWidth(); ++ix) {
 				color = new Color(img.getRGB(ix, iy));
 				hsv = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), hsv);
-				hue = hsv[0];
+				hue = 360.0 * hsv[0];
 				bin = (int) Math.floor(hue * bins / 360);
 				data[bin] += factor;
 			}

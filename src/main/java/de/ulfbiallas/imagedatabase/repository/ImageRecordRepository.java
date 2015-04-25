@@ -1,5 +1,7 @@
 package de.ulfbiallas.imagedatabase.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,5 +14,6 @@ import de.ulfbiallas.imagedatabase.entities.Tag;
 public interface ImageRecordRepository extends JpaRepository<ImageRecord, Long>{
 
 	ImageRecord findById(String id);
+	List<ImageRecord> findSimilarImages(String id);
 
 }

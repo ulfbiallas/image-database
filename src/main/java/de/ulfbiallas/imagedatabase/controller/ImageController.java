@@ -137,4 +137,18 @@ public class ImageController {
 		return responseBuilder.build();		
 	}
 
+
+
+	@GET
+	@Path("/{id}/similar")
+	@Produces(MediaType.APPLICATION_JSON)
+	@JacksonFeatures(serializationEnable =  { SerializationFeature.INDENT_OUTPUT })
+	public Response getSimilarImages(@PathParam("id") String id) {
+		List<ImageRecord> imageRecords = imageRecordRepository.findSimilarImages(id);
+		List<ImageMetaInfo> imageMetaInfos = ImageMetaInfo.getMetaInforsForImageRecords(new HashSet<ImageRecord>(imageRecords));
+		ResponseBuilder responseBuilder = Response.status(Status.OK);
+		responseBuilder.entity(imageMetaInfos);
+		return responseBuilder.build();		
+	}
+
 }

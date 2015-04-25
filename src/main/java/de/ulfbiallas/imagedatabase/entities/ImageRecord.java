@@ -11,17 +11,17 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-
-import org.hibernate.Hibernate;
 
 import de.ulfbiallas.imagedatabase.tools.ImageMetaInfo;
 
 
 
 @Entity
+@NamedQuery(name = "ImageRecord.findSimilarImages", query = "SELECT ir from ImageRecord ir where ir.id <> (?1)")
 public class ImageRecord {
 
 	@Id

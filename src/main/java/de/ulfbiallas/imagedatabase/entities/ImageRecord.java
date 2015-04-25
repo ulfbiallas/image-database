@@ -47,6 +47,9 @@ public class ImageRecord {
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Tag> tags = new HashSet<Tag>();
 
+	@OneToOne
+	private Feature feature;
+
 
 
 	public String getId() {
@@ -103,6 +106,14 @@ public class ImageRecord {
 
 	public void setTags(Set<Tag> tags) {
 		this.tags = tags;
+	}
+
+	public Feature getFeature() {
+		return feature;
+	}
+
+	public void setFeature(Feature feature) {
+		this.feature = feature;
 	}
 
 	public ImageMetaInfo getMetaInfo() {

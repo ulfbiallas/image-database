@@ -1,7 +1,6 @@
 package de.ulfbiallas.imagedatabase.controller;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -58,8 +57,8 @@ public class TagController {
 		tagString = tagString.replaceAll("\\+", " ");
 		Tag tag = tagRepository.findByName(tagString);
 
-		Set<ImageRecord> imageRecords = tag.getImageRecords();
-		List<ImageMetaInfo> imageMetaInfos = ImageMetaInfo.getMetaInforsForImageRecords(imageRecords);
+		List<ImageRecord> imageRecords = tag.getImageRecords();
+		List<ImageMetaInfo> imageMetaInfos = ImageMetaInfo.getMetaInfosForImageRecords(imageRecords);
 
 		ResponseBuilder responseBuilder = Response.status(Status.OK);
 		responseBuilder.entity(imageMetaInfos);

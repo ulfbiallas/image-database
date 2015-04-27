@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import de.ulfbiallas.imagedatabase.entities.ImageRecord;
 
@@ -18,6 +17,7 @@ public class ImageMetaInfo {
 	private Integer height;
 	private String type;
 	private List<String> tags;
+	private Double score;
 
 
 
@@ -85,7 +85,15 @@ public class ImageMetaInfo {
 		this.tags = tags;
 	}
 
-	public static List<ImageMetaInfo> getMetaInforsForImageRecords(Set<ImageRecord> imageRecords) {
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
+	}
+
+	public static List<ImageMetaInfo> getMetaInfosForImageRecords(List<ImageRecord> imageRecords) {
 		List<ImageMetaInfo> imageMetaInfos = new ArrayList<ImageMetaInfo>();
 		Iterator<ImageRecord> imageRecordIterator = imageRecords.iterator();
 		while(imageRecordIterator.hasNext()) {

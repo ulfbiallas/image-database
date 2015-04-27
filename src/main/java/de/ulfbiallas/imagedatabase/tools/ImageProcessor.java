@@ -5,10 +5,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -17,9 +20,11 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
+import de.ulfbiallas.imagedatabase.entities.Feature;
 import de.ulfbiallas.imagedatabase.entities.Image;
 import de.ulfbiallas.imagedatabase.entities.ImageRecord;
 import de.ulfbiallas.imagedatabase.entities.Tag;
+import de.ulfbiallas.imagedatabase.repository.FeatureRepository;
 import de.ulfbiallas.imagedatabase.repository.ImageRecordRepository;
 import de.ulfbiallas.imagedatabase.repository.ImageRepository;
 import de.ulfbiallas.imagedatabase.repository.TagRepository;
@@ -32,16 +37,18 @@ public class ImageProcessor {
 	private final ImageRepository imageRepository;
 	private final ImageRecordRepository imageRecordRepository;
 	private final TagRepository tagRepository;
+	private final FeatureRepository featureRepository;
 
 	private static final int THUMBNAIL_SIZE = 200;
 
 
 
 	@Inject
-	public ImageProcessor(final ImageRepository imageRepository, final ImageRecordRepository imageRecordRepository, final TagRepository tagRepository) {
+	public ImageProcessor(final ImageRepository imageRepository, final ImageRecordRepository imageRecordRepository, final TagRepository tagRepository, final FeatureRepository featureRepository) {
 		this.imageRepository = imageRepository;
 		this.imageRecordRepository = imageRecordRepository;
 		this.tagRepository = tagRepository;
+		this.featureRepository = featureRepository;
 	}
 
 
@@ -76,11 +83,23 @@ public class ImageProcessor {
 			Image thumbnail = createImage(bufferedImageThumbnail, currentTime);
 			imageRepository.save(thumbnail);
 
+			Histogram histogram = new Histogram(bufferedImageThumbnail);
+			double[] featureArray = histogram.getData();
+			Map<Integer, Double> featureMap = new HashMap<Integer, Double>();
+			for(int k=0; k<featureArray.length; ++k) {
+				featureMap.put(k, featureArray[k]);
+			}
+			Feature feature = new Feature();
+			feature.setHueHistogram(featureMap);
+			feature.setId(UUID.randomUUID().toString());
+			System.out.println("histogram: " + Arrays.toString(histogram.getData()));
+			featureRepository.save(feature);
+
 			String tag;
 			Set<String> tagSet = processTagsString(tags);
 			Iterator<String> tagSetIterator = tagSet.iterator();
 			Tag tagEntity;
-			Set<Tag> tagEntities = new HashSet<Tag>();
+			List<Tag> tagEntities = new ArrayList<Tag>();
 			while(tagSetIterator.hasNext()) {
 				tag = tagSetIterator.next();
 				System.out.println("get tag by name: " + tag);
@@ -104,6 +123,7 @@ public class ImageProcessor {
 			imageRecord.setDescription(description);
 			imageRecord.setTime(currentTime);
 			imageRecord.setTags(tagEntities);
+			imageRecord.setFeature(feature);
 			imageRecordRepository.save(imageRecord);
 
 		}

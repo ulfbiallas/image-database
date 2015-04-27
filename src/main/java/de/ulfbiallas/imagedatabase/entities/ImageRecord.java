@@ -2,9 +2,7 @@ package de.ulfbiallas.imagedatabase.entities;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,7 +41,7 @@ public class ImageRecord {
 	private Image thumbnail;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	private Set<Tag> tags = new HashSet<Tag>();
+	private List<Tag> tags = new ArrayList<Tag>();
 
 	@OneToOne
 	private Feature feature;
@@ -100,11 +98,11 @@ public class ImageRecord {
 		this.thumbnail = thumbnail;
 	}
 
-	public Set<Tag> getTags() {
+	public List<Tag> getTags() {
 		return tags;
 	}
 
-	public void setTags(Set<Tag> tags) {
+	public void setTags(List<Tag> tags) {
 		this.tags = tags;
 	}
 
@@ -138,7 +136,7 @@ public class ImageRecord {
 		return metaInfo;
 	}
 
-	private List<String> convertTagsToStrings(Set<Tag> tags) {
+	private List<String> convertTagsToStrings(List<Tag> tags) {
 		List<String> tagsAsString = new ArrayList<String>();
 		for (Tag tag: tags) {
 			tagsAsString.add(tag.getName());

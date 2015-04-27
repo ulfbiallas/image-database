@@ -3,8 +3,6 @@ package de.ulfbiallas.imagedatabase.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-import de.ulfbiallas.imagedatabase.tools.ImageMetaInfo;
-
 
 
 @Entity

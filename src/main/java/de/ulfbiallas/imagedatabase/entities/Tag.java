@@ -1,8 +1,8 @@
 package de.ulfbiallas.imagedatabase.entities;
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,7 +34,7 @@ public class Tag {
 
 	@JsonIgnore
 	@ManyToMany(mappedBy="tags", fetch=FetchType.EAGER)
-	private Set<ImageRecord> imageRecords = new HashSet<ImageRecord>();
+	private List<ImageRecord> imageRecords = new ArrayList<ImageRecord>();
 
 
 
@@ -62,11 +62,11 @@ public class Tag {
 		this.time = time;
 	}
 
-	public Set<ImageRecord> getImageRecords() {
+	public List<ImageRecord> getImageRecords() {
 		return imageRecords;
 	}
 
-	public void setImageRecords(Set<ImageRecord> imageRecords) {
+	public void setImageRecords(List<ImageRecord> imageRecords) {
 		this.imageRecords = imageRecords;
 	}
 

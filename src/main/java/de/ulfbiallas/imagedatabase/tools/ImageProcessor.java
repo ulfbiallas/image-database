@@ -4,11 +4,13 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -97,7 +99,7 @@ public class ImageProcessor {
 			Set<String> tagSet = processTagsString(tags);
 			Iterator<String> tagSetIterator = tagSet.iterator();
 			Tag tagEntity;
-			Set<Tag> tagEntities = new HashSet<Tag>();
+			List<Tag> tagEntities = new ArrayList<Tag>();
 			while(tagSetIterator.hasNext()) {
 				tag = tagSetIterator.next();
 				System.out.println("get tag by name: " + tag);

@@ -18,6 +18,7 @@ public class ImageMetaInfo {
 	private Integer height;
 	private String type;
 	private List<String> tags;
+	private Double score;
 
 
 
@@ -83,6 +84,14 @@ public class ImageMetaInfo {
 
 	public void setTags(List<String> tags) {
 		this.tags = tags;
+	}
+
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
 	}
 
 	public static List<ImageMetaInfo> getMetaInforsForImageRecords(Set<ImageRecord> imageRecords) {

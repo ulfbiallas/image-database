@@ -48,6 +48,8 @@ public class ImageRecord {
 	@OneToOne
 	private Feature feature;
 
+	private Double score;
+
 
 
 	public String getId() {
@@ -114,6 +116,14 @@ public class ImageRecord {
 		this.feature = feature;
 	}
 
+	public Double getScore() {
+		return score;
+	}
+
+	public void setScore(Double score) {
+		this.score = score;
+	}
+
 	public ImageMetaInfo getMetaInfo() {
 		ImageMetaInfo metaInfo = new ImageMetaInfo();
 		metaInfo.setId(getId());
@@ -124,6 +134,7 @@ public class ImageRecord {
 		metaInfo.setHeight(getImage().getHeight());
 		metaInfo.setType(getImage().getType());
 		metaInfo.setTags(convertTagsToStrings(getTags()));
+		metaInfo.setScore(getScore());
 		return metaInfo;
 	}
 

@@ -93,61 +93,74 @@ public class ImageController {
 
 
 
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@JacksonFeatures(serializationEnable =  { SerializationFeature.INDENT_OUTPUT })
-	public Response getMetaInfosForAllImages() {
-		List<ImageRecord> imageRecords = imageRecordRepository.findAll();
-		List<ImageMetaInfo> imageMetaInfos = ImageMetaInfo.getMetaInfosForImageRecords(imageRecords);
-		ResponseBuilder responseBuilder = Response.status(Status.OK);
-		responseBuilder.entity(imageMetaInfos);
-		return responseBuilder.build();		
-	}
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @JacksonFeatures(serializationEnable =  { SerializationFeature.INDENT_OUTPUT })
+    public Response getMetaInfosForAllImages() {
+        List<ImageRecord> imageRecords = imageRecordRepository.findAll();
+        List<ImageMetaInfo> imageMetaInfos = ImageMetaInfo.getMetaInfosForImageRecords(imageRecords);
+        ResponseBuilder responseBuilder = Response.status(Status.OK);
+        responseBuilder.entity(imageMetaInfos);
+        return responseBuilder.build();
+    }
 
 
 
-	@GET
-	@Path("/{id}")
-	@Produces("image/png")
-	public Response showImage(@PathParam("id") String id) {
-		ImageRecord imageRecord = imageRecordRepository.findById(id);
-		Image imageFile = imageRecord.getImage();
-		InputStream inputStream = new ByteArrayInputStream(imageFile.getData());
-
-		ResponseBuilder responseBuilder = Response.status(Status.OK);
-		responseBuilder.header("Content-Type", "image/"+imageFile.getType());
-		responseBuilder.entity(inputStream);
-		return responseBuilder.build();		
-	}
+    @GET
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @JacksonFeatures(serializationEnable =  { SerializationFeature.INDENT_OUTPUT })
+    public Response getImage(@PathParam("id") String id) {
+        ImageRecord imageRecord = imageRecordRepository.findById(id);
+        ResponseBuilder responseBuilder = Response.status(Status.OK);
+        responseBuilder.entity(imageRecord.getMetaInfo());
+        return responseBuilder.build();     
+    }
 
 
 
-	@GET
-	@Path("/{id}/thumbnail")
-	@Produces("image/png")
-	public Response showThumbnail(@PathParam("id") String id) {
-		ImageRecord imageRecord = imageRecordRepository.findById(id);
-		Image imageFile = imageRecord.getThumbnail();
-		InputStream inputStream = new ByteArrayInputStream(imageFile.getData());
+    @GET
+    @Path("/{id}/view")
+    @Produces("image/png")
+    public Response viewImage(@PathParam("id") String id) {
+        ImageRecord imageRecord = imageRecordRepository.findById(id);
+        Image imageFile = imageRecord.getImage();
+        InputStream inputStream = new ByteArrayInputStream(imageFile.getData());
 
-		ResponseBuilder responseBuilder = Response.status(Status.OK);
-		responseBuilder.header("Content-Type", "image/"+imageFile.getType());
-		responseBuilder.entity(inputStream);
-		return responseBuilder.build();		
-	}
+        ResponseBuilder responseBuilder = Response.status(Status.OK);
+        responseBuilder.header("Content-Type", "image/"+imageFile.getType());
+        responseBuilder.entity(inputStream);
+        return responseBuilder.build();		
+    }
 
 
 
-	@GET
-	@Path("/{id}/similar")
-	@Produces(MediaType.APPLICATION_JSON)
-	@JacksonFeatures(serializationEnable =  { SerializationFeature.INDENT_OUTPUT })
-	public Response getSimilarImages(@PathParam("id") String id) {
-		List<ImageRecord> imageRecords = imageRecordRepository.findSimilarImages(id);
-		List<ImageMetaInfo> imageMetaInfos = ImageMetaInfo.getMetaInfosForImageRecords(imageRecords);
-		ResponseBuilder responseBuilder = Response.status(Status.OK);
-		responseBuilder.entity(imageMetaInfos);
-		return responseBuilder.build();		
-	}
+    @GET
+    @Path("/{id}/view/thumbnail")
+    @Produces("image/png")
+    public Response viewImageAsThumbnail(@PathParam("id") String id) {
+        ImageRecord imageRecord = imageRecordRepository.findById(id);
+        Image imageFile = imageRecord.getThumbnail();
+        InputStream inputStream = new ByteArrayInputStream(imageFile.getData());
+
+        ResponseBuilder responseBuilder = Response.status(Status.OK);
+        responseBuilder.header("Content-Type", "image/"+imageFile.getType());
+        responseBuilder.entity(inputStream);
+        return responseBuilder.build();		
+    }
+
+
+
+    @GET
+    @Path("/{id}/similar")
+    @Produces(MediaType.APPLICATION_JSON)
+    @JacksonFeatures(serializationEnable =  { SerializationFeature.INDENT_OUTPUT })
+    public Response getSimilarImages(@PathParam("id") String id) {
+        List<ImageRecord> imageRecords = imageRecordRepository.findSimilarImages(id);
+        List<ImageMetaInfo> imageMetaInfos = ImageMetaInfo.getMetaInfosForImageRecords(imageRecords);
+        ResponseBuilder responseBuilder = Response.status(Status.OK);
+        responseBuilder.entity(imageMetaInfos);
+        return responseBuilder.build();		
+    }
 
 }

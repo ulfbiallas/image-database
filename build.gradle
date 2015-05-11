@@ -23,6 +23,9 @@ dependencies {
     compile 'org.hibernate:hibernate-entitymanager:4.3.5.Final'
     compile 'org.hibernate:hibernate-c3p0:4.3.5.Final'
     compile 'mysql:mysql-connector-java:5.1.21'
+
+    // Testing
+    testCompile 'junit:junit:4.12'
 }
 
 jar {

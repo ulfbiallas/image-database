@@ -38,9 +38,17 @@ public class Tag {
 
 
 
-	public String getId() {
-		return id;
-	}
+    public Tag() {
+
+    }
+
+    public Tag(String name) {
+        this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
 
 	public void setId(String id) {
 		this.id = id;

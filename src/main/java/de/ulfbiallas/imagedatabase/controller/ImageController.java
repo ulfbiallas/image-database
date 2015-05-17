@@ -27,6 +27,7 @@ import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 import de.ulfbiallas.imagedatabase.entities.Image;
 import de.ulfbiallas.imagedatabase.entities.ImageRecord;
 import de.ulfbiallas.imagedatabase.repository.ImageRecordRepository;
+import de.ulfbiallas.imagedatabase.service.MetaInfoService;
 import de.ulfbiallas.imagedatabase.tools.ImageMetaInfo;
 import de.ulfbiallas.imagedatabase.tools.ImageProcessor;
 
@@ -35,16 +36,21 @@ import de.ulfbiallas.imagedatabase.tools.ImageProcessor;
 @Path("image")
 public class ImageController {
 
-	private final ImageRecordRepository imageRecordRepository;
-	private final ImageProcessor imageProcessor;
+    private final ImageRecordRepository imageRecordRepository;
+    private final ImageProcessor imageProcessor;
+    private final MetaInfoService metaInfoService;
 
 
 
-	@Inject
-	public ImageController(final ImageRecordRepository imageRecordRepository, final ImageProcessor imageProcessor) {
-		this.imageRecordRepository = imageRecordRepository;
-		this.imageProcessor = imageProcessor;
-	}
+    @Inject
+    public ImageController(
+        final ImageRecordRepository imageRecordRepository,
+        final ImageProcessor imageProcessor,
+        final MetaInfoService metaInfoService) {
+        this.imageRecordRepository = imageRecordRepository;
+        this.imageProcessor = imageProcessor;
+        this.metaInfoService = metaInfoService;
+    }
 
 
 
@@ -98,7 +104,7 @@ public class ImageController {
     @JacksonFeatures(serializationEnable =  { SerializationFeature.INDENT_OUTPUT })
     public Response getMetaInfosForAllImages() {
         List<ImageRecord> imageRecords = imageRecordRepository.findAll();
-        List<ImageMetaInfo> imageMetaInfos = ImageMetaInfo.getMetaInfosForImageRecords(imageRecords);
+        List<ImageMetaInfo> imageMetaInfos = metaInfoService.getMetaInfosForImageRecords(imageRecords);
         ResponseBuilder responseBuilder = Response.status(Status.OK);
         responseBuilder.entity(imageMetaInfos);
         return responseBuilder.build();
@@ -157,7 +163,7 @@ public class ImageController {
     @JacksonFeatures(serializationEnable =  { SerializationFeature.INDENT_OUTPUT })
     public Response getSimilarImages(@PathParam("id") String id) {
         List<ImageRecord> imageRecords = imageRecordRepository.findSimilarImages(id);
-        List<ImageMetaInfo> imageMetaInfos = ImageMetaInfo.getMetaInfosForImageRecords(imageRecords);
+        List<ImageMetaInfo> imageMetaInfos = metaInfoService.getMetaInfosForImageRecords(imageRecords);
         ResponseBuilder responseBuilder = Response.status(Status.OK);
         responseBuilder.entity(imageMetaInfos);
         return responseBuilder.build();		

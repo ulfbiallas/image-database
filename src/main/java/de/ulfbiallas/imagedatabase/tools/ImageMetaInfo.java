@@ -93,13 +93,4 @@ public class ImageMetaInfo {
 		this.score = score;
 	}
 
-	public static List<ImageMetaInfo> getMetaInfosForImageRecords(List<ImageRecord> imageRecords) {
-		List<ImageMetaInfo> imageMetaInfos = new ArrayList<ImageMetaInfo>();
-		Iterator<ImageRecord> imageRecordIterator = imageRecords.iterator();
-		while(imageRecordIterator.hasNext()) {
-			imageMetaInfos.add(imageRecordIterator.next().getMetaInfo());
-		}
-		return imageMetaInfos;
-	}
-
 }

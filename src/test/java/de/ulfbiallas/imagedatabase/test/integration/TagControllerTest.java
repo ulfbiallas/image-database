@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 import de.ulfbiallas.imagedatabase.controller.TagController;
 import de.ulfbiallas.imagedatabase.entities.Tag;
+import de.ulfbiallas.imagedatabase.repository.ImageRecordRepository;
 import de.ulfbiallas.imagedatabase.repository.TagRepository;
 
 public class TagControllerTest extends JerseyTest  {
@@ -26,7 +27,9 @@ public class TagControllerTest extends JerseyTest  {
     @Override
     protected Application configure() {
         TagRepository tagRepo = Mockito.mock(TagRepository.class);
-        TagController tagController = new TagController(tagRepo);
+        ImageRecordRepository imageRepo = Mockito.mock(ImageRecordRepository.class);
+
+        TagController tagController = new TagController(tagRepo, imageRepo);
 
         Mockito.when(tagRepo.findAll()).thenReturn(createListOfTags());
 //        Mockito.when(tagRepo.findByName("testTag")).thenReturn(new Tag("testTag"));

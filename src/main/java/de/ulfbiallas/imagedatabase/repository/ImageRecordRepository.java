@@ -20,4 +20,9 @@ public interface ImageRecordRepository extends JpaRepository<ImageRecord, Long>{
 		nativeQuery = true)
 	List<ImageRecord> findSimilarImages(String id);
 
+    @Query(
+        value = "select ir.id, ir.caption, ir.description, ir.feature_id, ir.image_id, ir.thumbnail_id, ir.time, 0 as score from imagerecord ir, imagerecord_tag irtag, tag tag where (ir.id = irtag.imageRecords_id AND tag.id = irtag.tags_id AND tag.id = (?1))",
+        nativeQuery = true)
+    List<ImageRecord> findImagesByTagId(String tagId);
+
 }

@@ -17,7 +17,9 @@ import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 
 import de.ulfbiallas.imagedatabase.entities.ImageRecord;
 import de.ulfbiallas.imagedatabase.entities.Tag;
+import de.ulfbiallas.imagedatabase.repository.ImageRecordRepository;
 import de.ulfbiallas.imagedatabase.repository.TagRepository;
+import de.ulfbiallas.imagedatabase.service.MetaInfoService;
 import de.ulfbiallas.imagedatabase.tools.ImageMetaInfo;
 
 
@@ -25,14 +27,23 @@ import de.ulfbiallas.imagedatabase.tools.ImageMetaInfo;
 public class TagController {
 
 
-	private final TagRepository tagRepository;
+    private final TagRepository tagRepository;
+
+    private final ImageRecordRepository imageRecordRepository;
+
+    private final MetaInfoService metaInfoService;
 
 
 
-	@Inject
-	public TagController(TagRepository tagRepository) {
-		this.tagRepository = tagRepository;
-	}
+    @Inject
+    public TagController(
+           final TagRepository tagRepository, 
+           final ImageRecordRepository imageRecordRepository,
+           final MetaInfoService metaInfoService) {
+        this.tagRepository = tagRepository;
+        this.imageRecordRepository = imageRecordRepository;
+        this.metaInfoService = metaInfoService;
+    }
 
 
 
@@ -57,8 +68,8 @@ public class TagController {
 		tagString = tagString.replaceAll("\\+", " ");
 		Tag tag = tagRepository.findByName(tagString);
 
-		List<ImageRecord> imageRecords = tag.getImageRecords();
-		List<ImageMetaInfo> imageMetaInfos = ImageMetaInfo.getMetaInfosForImageRecords(imageRecords);
+		List<ImageRecord> imageRecords = imageRecordRepository.findImagesByTagId(tag.getId());
+		List<ImageMetaInfo> imageMetaInfos = metaInfoService.getMetaInfosForImageRecords(imageRecords);
 
 		ResponseBuilder responseBuilder = Response.status(Status.OK);
 		responseBuilder.entity(imageMetaInfos);

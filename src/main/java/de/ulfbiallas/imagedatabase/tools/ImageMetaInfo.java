@@ -1,11 +1,9 @@
 package de.ulfbiallas.imagedatabase.tools;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
-import de.ulfbiallas.imagedatabase.entities.ImageRecord;
+
 
 public class ImageMetaInfo {
 
@@ -91,15 +89,6 @@ public class ImageMetaInfo {
 
 	public void setScore(Double score) {
 		this.score = score;
-	}
-
-	public static List<ImageMetaInfo> getMetaInfosForImageRecords(List<ImageRecord> imageRecords) {
-		List<ImageMetaInfo> imageMetaInfos = new ArrayList<ImageMetaInfo>();
-		Iterator<ImageRecord> imageRecordIterator = imageRecords.iterator();
-		while(imageRecordIterator.hasNext()) {
-			imageMetaInfos.add(imageRecordIterator.next().getMetaInfo());
-		}
-		return imageMetaInfos;
 	}
 
 }

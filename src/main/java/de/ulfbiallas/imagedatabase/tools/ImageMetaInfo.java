@@ -16,6 +16,8 @@ public class ImageMetaInfo {
 	private String type;
 	private List<String> tags;
 	private Double score;
+    private String imageUrl;
+    private String thumbnailUrl;
 
 
 
@@ -25,6 +27,8 @@ public class ImageMetaInfo {
 
 	public void setId(String id) {
 		this.id = id;
+		setImageUrl("image/"+id+"/view");
+		setThumbnailUrl("image/"+id+"/view/thumbnail");
 	}
 
 	public String getCaption() {
@@ -90,5 +94,21 @@ public class ImageMetaInfo {
 	public void setScore(Double score) {
 		this.score = score;
 	}
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
+    }
+
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
 
 }

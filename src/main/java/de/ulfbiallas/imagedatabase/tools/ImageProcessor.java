@@ -18,6 +18,7 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
 
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
 import de.ulfbiallas.imagedatabase.entities.Feature;
@@ -38,17 +39,19 @@ public class ImageProcessor {
 	private final ImageRecordRepository imageRecordRepository;
 	private final TagRepository tagRepository;
 	private final FeatureRepository featureRepository;
+	private final CacheManager cacheManager;
 
 	private static final int THUMBNAIL_SIZE = 200;
 
 
 
 	@Inject
-	public ImageProcessor(final ImageRepository imageRepository, final ImageRecordRepository imageRecordRepository, final TagRepository tagRepository, final FeatureRepository featureRepository) {
+	public ImageProcessor(final ImageRepository imageRepository, final ImageRecordRepository imageRecordRepository, final TagRepository tagRepository, final FeatureRepository featureRepository, final CacheManager cacheManager) {
 		this.imageRepository = imageRepository;
 		this.imageRecordRepository = imageRecordRepository;
 		this.tagRepository = tagRepository;
 		this.featureRepository = featureRepository;
+		this.cacheManager = cacheManager;
 	}
 
 
@@ -126,8 +129,20 @@ public class ImageProcessor {
 			imageRecord.setFeature(feature);
 			imageRecordRepository.save(imageRecord);
 
+            (new Thread() {
+                public void run() {
+                    clearCache();
+                }
+            }).start();
 		}
 	}
+
+
+
+    private void clearCache() {
+        cacheManager.getCache("imagerecord").clear();
+        cacheManager.getCache("tag").clear();
+    }
 
 
 

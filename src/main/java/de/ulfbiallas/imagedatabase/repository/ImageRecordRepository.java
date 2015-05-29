@@ -2,7 +2,6 @@ package de.ulfbiallas.imagedatabase.repository;
 
 import java.util.List;
 
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -31,9 +30,5 @@ public interface ImageRecordRepository extends JpaRepository<ImageRecord, Long>{
         value = "select ir.id, ir.caption, ir.description, ir.feature_id, ir.image_id, ir.thumbnail_id, ir.time, 0 as score from imagerecord ir, imagerecord_tag irtag, tag tag where (ir.id = irtag.imageRecords_id AND tag.id = irtag.tags_id AND tag.id = (?1))",
         nativeQuery = true)
     List<ImageRecord> findImagesByTagId(String tagId);
-
-    @Override
-    @CacheEvict(value = {"imagerecord", "tag"}, allEntries = true)
-    <S extends ImageRecord> S save(S entity);
 
 }

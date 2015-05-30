@@ -3,6 +3,8 @@ package de.ulfbiallas.imagedatabase.repository;
 import java.util.List;
 
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,7 +17,7 @@ import de.ulfbiallas.imagedatabase.entities.ImageRecord;
 public interface ImageRecordRepository extends JpaRepository<ImageRecord, Long>{
 
     @Cacheable(value = "imagerecord")
-    List<ImageRecord> findAll();
+    Page<ImageRecord> findAll(Pageable pageable);
 
     @Cacheable(value = "imagerecord")
     ImageRecord findById(String id);

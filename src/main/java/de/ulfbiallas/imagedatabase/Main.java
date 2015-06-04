@@ -9,6 +9,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import de.ulfbiallas.imagedatabase.config.ServerConfiguration;
 import de.ulfbiallas.imagedatabase.filter.CorsFilter;
+import de.ulfbiallas.imagedatabase.filter.CustomAnnotationBasedFiltersFeature;
 
 
 
@@ -24,6 +25,7 @@ public class Main {
 		resourceConfig.register(MultiPartFeature.class);
 		resourceConfig.register(JacksonFeature.class);
 		resourceConfig.register(CorsFilter.class);
+		resourceConfig.register(CustomAnnotationBasedFiltersFeature.class);
 
 		ServerConfiguration serverConfiguration = new ServerConfiguration();
 		String url = "http://localhost:"+serverConfiguration.getPort()+"/";

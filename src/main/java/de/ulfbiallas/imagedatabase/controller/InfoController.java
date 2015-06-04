@@ -11,6 +11,8 @@ import net.sf.ehcache.statistics.StatisticsGateway;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 
+import de.ulfbiallas.imagedatabase.tools.Log;
+
 
 
 @Path("info")
@@ -27,6 +29,7 @@ public class InfoController {
 
 
 
+    @Log
     @GET
     public Response getInfo() {
         String info = "<h1>Image Database</h1>";

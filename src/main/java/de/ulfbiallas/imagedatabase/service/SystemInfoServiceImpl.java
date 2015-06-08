@@ -7,7 +7,9 @@ import net.sf.ehcache.statistics.StatisticsGateway;
 
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SystemInfoServiceImpl implements SystemInfoService {
 
     private final CacheManager cacheManager;
@@ -35,7 +37,8 @@ public class SystemInfoServiceImpl implements SystemInfoService {
             info += "<b>Cache</b>: " + name + "<br>";
             Cache cache = ehCacheCacheManager.getCacheManager().getCache(name);
             StatisticsGateway stats = cache.getStatistics();
-            info += "localHeapSizeInBytes: " + stats.getLocalHeapSizeInBytes() + "<br>";
+            info += "localHeapSizeInBytes: " + stats.getLocalHeapSizeInBytes()
+                    + "<br>";
             info += "cacheHitCount: " + stats.cacheHitCount() + "<br>";
             info += "cacheMissCount: " + stats.cacheMissCount() + "<br>";
         }

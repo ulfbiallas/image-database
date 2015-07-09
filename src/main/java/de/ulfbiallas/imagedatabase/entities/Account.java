@@ -19,6 +19,9 @@ public class Account {
     @Column
     private String name;
 
+    @Column
+    private String password;
+
 
 
     public String getId() {
@@ -43,6 +46,14 @@ public class Account {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
 }

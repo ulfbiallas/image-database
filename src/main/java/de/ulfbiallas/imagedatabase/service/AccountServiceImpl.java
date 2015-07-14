@@ -29,4 +29,14 @@ public class AccountServiceImpl implements AccountService {
         accountRepository.save(account);
     }
 
+    @Override
+    public Account getById(String id) {
+        return accountRepository.findOne(id);
+    }
+
+    @Override
+    public Account getByName(String name) {
+        return accountRepository.findByName(name);
+    }
+
 }

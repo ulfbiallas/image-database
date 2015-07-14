@@ -8,6 +8,8 @@ import de.ulfbiallas.imagedatabase.entities.Account;
 
 
 @Repository
-public interface AccountRepository extends JpaRepository<Account, Long>{
+public interface AccountRepository extends JpaRepository<Account, String>{
+
+    Account findByName(String name);
 
 }

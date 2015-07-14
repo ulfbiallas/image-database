@@ -10,4 +10,8 @@ public interface AccountService {
 
     void createAccount(Account account);
 
+    Account getById(String id);
+
+    Account getByName(String name);
+
 }

@@ -14,9 +14,12 @@ public class AccountServiceImpl implements AccountService {
 
     private final AccountRepository accountRepository;
 
+    private final PasswordHashService passwordHashService;
+
     @Inject
-    public AccountServiceImpl(final AccountRepository accountRepository) {
+    public AccountServiceImpl(final AccountRepository accountRepository, final PasswordHashService passwordHashService) {
         this.accountRepository = accountRepository;
+        this.passwordHashService = passwordHashService;
     }
 
     @Override
@@ -26,6 +29,8 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void createAccount(Account account) {
+        String hashedPassword = passwordHashService.hashPassword(account.getPassword());
+        account.setPassword(hashedPassword);
         accountRepository.save(account);
     }
 

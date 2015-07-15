@@ -11,15 +11,19 @@ import javax.ws.rs.core.Response.Status;
 
 import de.ulfbiallas.imagedatabase.entities.Account;
 import de.ulfbiallas.imagedatabase.service.AccountService;
+import de.ulfbiallas.imagedatabase.service.PasswordHashService;
 import de.ulfbiallas.imagedatabase.tools.BaseAuthentication;
 
 public class AuthFilter implements ContainerRequestFilter {
 
     private final AccountService accountService;
 
+    private final PasswordHashService passwordHashService;
+
     @Inject
-    public AuthFilter(final AccountService accountService) {
+    public AuthFilter(final AccountService accountService, final PasswordHashService passwordHashService) {
         this.accountService = accountService;
+        this.passwordHashService = passwordHashService;
     }
 
     @Override
@@ -31,7 +35,11 @@ public class AuthFilter implements ContainerRequestFilter {
         if (baseAuthentication.isBaseAuthentication()) {
             Account account = accountService.getByName(baseAuthentication.getUsername());
             if (account != null) {
-                System.out.println("LOGGED IN AS: " + account.getName() + " / " + account.getEmail());
+                if(passwordHashService.checkPassword(baseAuthentication.getPassword(), account.getPassword())) {
+                    System.out.println("LOGGED IN AS: " + account.getName() + " / " + account.getEmail());
+                } else {
+                    abortBySendingStatusUnauthorized(requestContext);
+                }
             } else {
                 abortBySendingStatusUnauthorized(requestContext);
             }

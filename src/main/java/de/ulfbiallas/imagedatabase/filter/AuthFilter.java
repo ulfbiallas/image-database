@@ -10,9 +10,10 @@ import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 
 import de.ulfbiallas.imagedatabase.entities.Account;
+import de.ulfbiallas.imagedatabase.security.BaseAuthentication;
+import de.ulfbiallas.imagedatabase.security.SecurityContextImpl;
 import de.ulfbiallas.imagedatabase.service.AccountService;
 import de.ulfbiallas.imagedatabase.service.PasswordHashService;
-import de.ulfbiallas.imagedatabase.tools.BaseAuthentication;
 
 public class AuthFilter implements ContainerRequestFilter {
 
@@ -37,14 +38,17 @@ public class AuthFilter implements ContainerRequestFilter {
             if (account != null) {
                 if(passwordHashService.checkPassword(baseAuthentication.getPassword(), account.getPassword())) {
                     System.out.println("LOGGED IN AS: " + account.getName() + " / " + account.getEmail());
+                    requestContext.setSecurityContext(new SecurityContextImpl(baseAuthentication));
                 } else {
+                    System.out.println("WRONG PASSWORD");
                     abortBySendingStatusUnauthorized(requestContext);
                 }
             } else {
+                System.out.println("NO ACCOUNT FOUND");
                 abortBySendingStatusUnauthorized(requestContext);
             }
         } else {
-            abortBySendingStatusUnauthorized(requestContext);
+            System.out.println("ANONYMOUS ACCESS");
         }
 
     }

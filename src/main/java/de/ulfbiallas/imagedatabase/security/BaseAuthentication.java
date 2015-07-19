@@ -1,4 +1,4 @@
-package de.ulfbiallas.imagedatabase.tools;
+package de.ulfbiallas.imagedatabase.security;
 
 import org.glassfish.jersey.internal.util.Base64;
 

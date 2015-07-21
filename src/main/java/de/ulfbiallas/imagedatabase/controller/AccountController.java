@@ -2,12 +2,14 @@ package de.ulfbiallas.imagedatabase.controller;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -41,6 +43,18 @@ public class AccountController {
     public Response getAccount() {
         List<Account> accounts = accountService.getAllAccounts();
         return Response.ok(accounts).build();
+    }
+
+
+
+    @RolesAllowed("user")
+    @GET
+    @Path("{name}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @JacksonFeatures(serializationEnable = { SerializationFeature.INDENT_OUTPUT })
+    public Response getAccountByName(@PathParam("name") String name) {
+        Account account = accountService.getByName(name);
+        return Response.ok(account).build();
     }
 
 

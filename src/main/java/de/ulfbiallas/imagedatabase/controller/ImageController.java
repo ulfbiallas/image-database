@@ -4,6 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -34,7 +36,7 @@ import de.ulfbiallas.imagedatabase.tools.ImageMetaInfo;
 import de.ulfbiallas.imagedatabase.tools.ImageProcessor;
 
 
-
+@PermitAll
 @Path("image")
 public class ImageController {
 
@@ -103,6 +105,7 @@ public class ImageController {
 
 
 
+    @PermitAll
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @JacksonFeatures(serializationEnable =  { SerializationFeature.INDENT_OUTPUT })
@@ -116,6 +119,7 @@ public class ImageController {
 
 
 
+    @RolesAllowed("user")
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -129,6 +133,7 @@ public class ImageController {
 
 
 
+    @RolesAllowed("user")
     @GET
     @Path("/{id}/view")
     @Produces("image/png")

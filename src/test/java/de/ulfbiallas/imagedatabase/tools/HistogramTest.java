@@ -1,4 +1,4 @@
-package de.ulfbiallas.imagedatabase.test.unit;
+package de.ulfbiallas.imagedatabase.tools;
 
 
 import java.awt.Color;

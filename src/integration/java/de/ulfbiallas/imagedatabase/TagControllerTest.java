@@ -1,4 +1,4 @@
-package de.ulfbiallas.imagedatabase.test.integration;
+package de.ulfbiallas.imagedatabase;
 
 import java.util.ArrayList;
 import java.util.List;

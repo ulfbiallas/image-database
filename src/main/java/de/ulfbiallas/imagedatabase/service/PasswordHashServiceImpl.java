@@ -16,6 +16,7 @@ public class PasswordHashServiceImpl implements PasswordHashService {
         try {
             return BCrypt.checkpw(plainPasswordToCheck, hashedPassword);
         } catch (RuntimeException exception) {
+            // TODO: log error.
             System.out.println(exception);
             return false;
         }

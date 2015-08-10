@@ -12,7 +12,7 @@ public class BaseAuthentication {
 
     public BaseAuthentication(String authorizationHeader) {
 
-        Boolean isPreValidated = (authorizationHeader != null) && (authorizationHeader.substring(0, 6).equals("Basic "));
+        Boolean isPreValidated = (authorizationHeader != null) && authorizationHeader.length()>6 && (authorizationHeader.substring(0, 6).equals("Basic "));
 
         if (isPreValidated) {
 

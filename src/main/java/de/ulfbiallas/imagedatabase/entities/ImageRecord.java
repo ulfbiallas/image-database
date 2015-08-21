@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -46,10 +47,13 @@ public class ImageRecord {
 	@OneToOne
 	private Feature feature;
 
-	private Double score;
+    private Double score;
+
+    @OneToMany
+    private List<Comment> comments;
 
 
-
+    
 	public String getId() {
 		return id;
 	}
@@ -122,7 +126,15 @@ public class ImageRecord {
 		this.score = score;
 	}
 
-	public ImageMetaInfo getMetaInfo() {
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public ImageMetaInfo getMetaInfo() {
 		ImageMetaInfo metaInfo = new ImageMetaInfo();
 		metaInfo.setId(getId());
 		metaInfo.setCaption(getCaption());

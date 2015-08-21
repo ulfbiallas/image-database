@@ -11,7 +11,7 @@ import de.ulfbiallas.imagedatabase.entities.Tag;
 
 
 @Repository
-public interface TagRepository extends JpaRepository<Tag, Long>{
+public interface TagRepository extends JpaRepository<Tag, String>{
 
     @Cacheable(value = "tag")
     List<Tag> findAll();

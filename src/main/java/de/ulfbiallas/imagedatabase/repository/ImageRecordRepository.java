@@ -14,7 +14,7 @@ import de.ulfbiallas.imagedatabase.entities.ImageRecord;
 
 
 @Repository
-public interface ImageRecordRepository extends JpaRepository<ImageRecord, Long>{
+public interface ImageRecordRepository extends JpaRepository<ImageRecord, String>{
 
     @Cacheable(value = "imagerecord")
     Page<ImageRecord> findAll(Pageable pageable);

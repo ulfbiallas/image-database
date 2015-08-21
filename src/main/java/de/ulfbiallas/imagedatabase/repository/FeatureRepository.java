@@ -8,6 +8,6 @@ import de.ulfbiallas.imagedatabase.entities.Feature;
 
 
 @Repository
-public interface FeatureRepository extends JpaRepository<Feature, Long>{
+public interface FeatureRepository extends JpaRepository<Feature, String>{
 
 }

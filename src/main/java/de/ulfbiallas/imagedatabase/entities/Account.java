@@ -25,8 +25,8 @@ public class Account {
     @Column
     private String password;
 
-    @OneToMany
-    private List<Comment> comments;
+    //@OneToMany
+    //private List<Comment> comments;
 
 
 
@@ -62,12 +62,12 @@ public class Account {
         this.password = password;
     }
 
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
+//    public List<Comment> getComments() {
+//        return comments;
+//    }
+//
+//    public void setComments(List<Comment> comments) {
+//        this.comments = comments;
+//    }
 
 }

@@ -69,4 +69,10 @@ public class Comment {
         this.subject = subject;
     }
 
+    public String toString() {
+        String str = "";
+        str += "Content: " + content + "\n";
+        return str;
+    }
+
 }

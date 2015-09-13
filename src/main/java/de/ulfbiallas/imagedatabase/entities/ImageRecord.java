@@ -14,6 +14,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import de.ulfbiallas.imagedatabase.tools.ImageMetaInfo;
 
 
@@ -49,12 +52,13 @@ public class ImageRecord {
 
     private Double score;
 
-    @OneToMany
-    private List<Comment> comments;
+    @OneToMany(fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT) //TODO: remove hibernate annotation
+    private List<Comment> comments = new ArrayList<Comment>();
 
 
-    
-	public String getId() {
+
+    public String getId() {
 		return id;
 	}
 
@@ -149,10 +153,10 @@ public class ImageRecord {
 	}
 
 	private List<String> convertTagsToStrings(List<Tag> tags) {
-		List<String> tagsAsString = new ArrayList<String>();
+		List<String> tagsAsStrings = new ArrayList<String>();
 		for (Tag tag: tags) {
-			tagsAsString.add(tag.getName());
+			tagsAsStrings.add(tag.getName());
 		}
-		return tagsAsString;
+		return tagsAsStrings;
 	}
 }

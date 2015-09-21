@@ -1,20 +1,26 @@
 package de.ulfbiallas.imagedatabase.controller;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
+
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.jaxrs.annotation.JacksonFeatures;
 
 import de.ulfbiallas.imagedatabase.entities.Account;
 import de.ulfbiallas.imagedatabase.entities.Comment;
@@ -45,6 +51,16 @@ public class CommentController {
         responseBuilder.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         responseBuilder.header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
         return responseBuilder.build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @JacksonFeatures(serializationEnable = { SerializationFeature.INDENT_OUTPUT })
+    public Response getComments(@PathParam("id") String imageId) {
+        //List<Comment> comments = commentRepository.findAll();
+        ImageRecord imageRecord = imageRecordRepository.findById(imageId);
+        List<Comment> comments = commentRepository.findCommentsBySubject(imageRecord);
+        return Response.ok(comments).build();
     }
 
     @POST

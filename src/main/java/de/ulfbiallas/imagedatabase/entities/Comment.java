@@ -9,7 +9,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import de.ulfbiallas.imagedatabase.tools.CommentSerializer;
+
 @Entity
+@JsonSerialize(using=CommentSerializer.class)
 public class Comment {
 
     @Id

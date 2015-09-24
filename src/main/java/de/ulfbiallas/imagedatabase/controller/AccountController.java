@@ -64,7 +64,7 @@ public class AccountController {
         ResponseBuilder responseBuilder = Response.ok();
         responseBuilder.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
         responseBuilder.header("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
-        return responseBuilder.build();     
+        return responseBuilder.build();
     }
 
 

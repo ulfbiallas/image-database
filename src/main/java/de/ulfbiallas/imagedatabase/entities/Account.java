@@ -22,6 +22,9 @@ public class Account {
     @Column
     private String password;
 
+    //@OneToMany
+    //private List<Comment> comments;
+
 
 
     public String getId() {
@@ -55,5 +58,13 @@ public class Account {
     public void setPassword(String password) {
         this.password = password;
     }
+
+//    public List<Comment> getComments() {
+//        return comments;
+//    }
+//
+//    public void setComments(List<Comment> comments) {
+//        this.comments = comments;
+//    }
 
 }
